@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約カレンダー</title>
+    <style>
+        /* CSSは省略 */
+    </style>
+</head>
+<body>
+    <table class="calendar">
+        <thead>
+            <tr>
+                <th class="time-column">時間</th>
+                <th>10/1</th>
+                <th>10/2</th>
+                <th>10/3</th>
+            </tr>
+        </thead>
+        <tbody class="scrollable-body">
+        </tbody>
+    </table>
+
+    <script>
+        const tbody = document.querySelector('.scrollable-body');
+
+        // サンプルの予約データ (実際のデータに置き換えてください)
+        const reservations = [
+            { date: '10/1', time: '13:00', status: '予約済み' },
+            { date: '10/2', time: '10:00', status: '予約済み' },
+            // ... その他の予約データ
+        ];
+
+        for (let hour = 0; hour < 24; hour++) {
+            const row = document.createElement('tr');
+
+            // 時間列
+            const timeCell = document.createElement('td');
+            timeCell.classList.add('time-column');
+            timeCell.textContent = `${hour}:00`;
+            row.appendChild(timeCell);
+
+            // 各日の予約枠
+            for (let day = 1; day <= 3; day++) {
+                const cell = document.createElement('td');
+                // 予約データと照合して、予約状況を表示
+                let status = '空き';
+                reservations.forEach(reservation => {
+                    if (reservation.date === `10/${day}` && reservation.time === `${hour}:00`) {
+                        status = reservation.status;
+                    }
+                });
+                cell.textContent = status;
+                row.appendChild(cell);
+            }
+
+            tbody.appendChild(row);
+        }
+    </script>
+</body>
+</html>

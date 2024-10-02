@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1週間の予約カレンダー</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .calendar-container {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .time-column {
+            position: sticky;
+            left: 0;
+            background-color: #f2f2f2;
+            z-index: 2;
+        }
+        th:first-child {
+            z-index: 3;
+        }
+        #timeSelector {
+            margin-bottom: 10px;
+            padding: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <select id="timeSelector">
+        <option value="">時間を選択してください</option>
+        <!-- JavaScript will populate this -->
+    </select>
+
+    <div class="calendar-container" id="calendarContainer">
+        <table>
+            <thead>
+                <tr>
+                    <th>時間</th>
+                    <th>10/1 (日)</th>
+                    <th>10/2 (月)</th>
+                    <th>10/3 (火)</th>
+                    <th>10/4 (水)</th>
+                    <th>10/5 (木)</th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body">
+                <!-- JavaScript will populate this -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function generateCalendar() {
+            const calendarBody = document.getElementById('calendar-body');
+            const timeSelector = document.getElementById('timeSelector');
+
+            for (let hour = 0; hour < 24; hour++) {
+                const row = document.createElement('tr');
+                row.id = `hour-${hour}`;
+                const timeCell = document.createElement('td');
+                timeCell.textContent = `${hour}:00`;
+                timeCell.className = 'time-column';
+                row.appendChild(timeCell);
+
+                for (let day = 0; day < 5; day++) {
+                    const cell = document.createElement('td');
+                    cell.textContent = '◯';  // 「予約可能」を「◯」に変更
+                    row.appendChild(cell);
+                }
+
+                calendarBody.appendChild(row);
+
+                // ドロップダウンリストに時間を追加
+                const option = document.createElement('option');
+                option.value = hour;
+                option.textContent = `${hour}:00`;
+                timeSelector.appendChild(option);
+            }
+        }
+
+        function scrollToTime() {
+            const selectedTime = document.getElementById('timeSelector').value;
+            if (selectedTime !== "") {
+                const targetRow = document.getElementById(`hour-${selectedTime}`);
+                const container = document.getElementById('calendarContainer');
+                const targetPosition = targetRow.offsetTop - container.offsetTop;
+                container.scrollTop = targetPosition;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            generateCalendar();
+            document.getElementById('timeSelector').addEventListener('change', scrollToTime);
+        });
+    </script>
+</body>
+</html>

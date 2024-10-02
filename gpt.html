@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約カレンダー</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .time-column {
+            position: sticky;
+            left: 0;
+            background-color: #f2f2f2;
+            z-index: 2;
+        }
+        .scrollable-table {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .hour-cell {
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="scrollable-table">
+    <table>
+        <thead>
+            <tr>
+                <th class="time-column"></th>
+                <th>10/1</th>
+                <th>10/2</th>
+                <th>10/3</th>
+                <th>10/4</th>
+                <th>10/5</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- JavaScriptで24時間の行を生成 -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // 24時間分の行を作成
+    const tbody = document.querySelector('tbody');
+    for (let hour = 0; hour < 24; hour++) {
+        const row = document.createElement('tr');
+        const timeCell = document.createElement('td');
+        timeCell.classList.add('time-column');
+        timeCell.textContent = `${hour}:00 - ${hour + 1}:00`;
+        row.appendChild(timeCell);
+
+        // 1週間分の空のセルを作成
+        for (let day = 0; day < 5; day++) {
+            const cell = document.createElement('td');
+            cell.classList.add('hour-cell');
+            row.appendChild(cell);
+        }
+        tbody.appendChild(row);
+    }
+</script>
+
+</body>
+</html>
